@@ -2,17 +2,15 @@ package xuanmi.ning.common.events;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import xuanmi.ning.pay.domain.event.PayEvent;
-import xuanmi.ning.user.domain.event.UserEvent;
 
+/**
+ * 领域事件监听器 - 只依赖 DomainEvent 抽象，不依赖具体事件类型
+ */
 @Component
 public class Listener {
+
     @EventListener
     public void listen(DomainEvent event) {
-        if (event instanceof UserEvent) {
-            System.out.println("handler userevent");
-        } else if (event instanceof PayEvent) {
-            System.out.println("handler payevent");
-        }
+        System.out.println("handle domain event: " + event);
     }
 }

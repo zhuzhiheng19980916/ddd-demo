@@ -1,7 +1,7 @@
 package xuanmi.ning.pay.domain.service;
 
 import org.springframework.stereotype.Component;
-import xuanmi.ning.pay.domain.model.PayAgg;
+import xuanmi.ning.pay.domain.model.aggregate.PayAgg;
 
 @Component
 public class PayDomainService {

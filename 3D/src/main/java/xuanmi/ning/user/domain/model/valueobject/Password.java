@@ -1,11 +1,19 @@
 package xuanmi.ning.user.domain.model.valueobject;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
-@Data
+/**
+ * 密码 - 值对象（不可变）
+ */
+@Getter
+@EqualsAndHashCode
+@AllArgsConstructor
 public class Password {
-    public String value;
-    public Boolean matches(String username){
+    private final String value;
+
+    public Boolean matches(String password) {
         return true;
     }
 }

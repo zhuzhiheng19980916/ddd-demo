@@ -2,32 +2,35 @@ package xuanmi.ning.user.application;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import xuanmi.ning.user.application.command.LoginCommand;
-import xuanmi.ning.user.application.command.PayCommand;
 import xuanmi.ning.common.events.DomainEvent;
 import xuanmi.ning.common.events.EventBus;
 import xuanmi.ning.common.result.DomainResult;
+import xuanmi.ning.common.result.Result;
+import xuanmi.ning.user.application.command.LoginCommand;
+import xuanmi.ning.user.application.command.PayCommand;
 import xuanmi.ning.user.domain.model.aggregate.UserAgg;
+import xuanmi.ning.user.domain.repository.IUserCommandRepository;
+import xuanmi.ning.user.domain.repository.IUserQueryRepository;
 import xuanmi.ning.user.domain.service.UserDomainService;
 import xuanmi.ning.user.infrastructure.acl.PayAclService;
 import xuanmi.ning.user.infrastructure.acl.PayApiParam;
-import xuanmi.ning.user.infrastructure.repository.UserCommandRepository;
-import xuanmi.ning.user.infrastructure.repository.UserQueryRepository;
 
 @Component
 public class UserAppApplication {
+
     @Autowired
     private UserDomainService userDomainService;
     @Autowired
     private PayAclService payAclService;
     @Autowired
-    private UserQueryRepository userQueryRepository;
+    private IUserQueryRepository userQueryRepository;
     @Autowired
-    private UserCommandRepository userCommandRepository;
+    private IUserCommandRepository userCommandRepository;
     @Autowired
     private EventBus eventBus;
+
     //如果逻辑简单 只涉及单个聚合根 可以不经过域服务对象
-    public Object login(LoginCommand loginCommand){
+    public Result<DomainResult> login(LoginCommand loginCommand) {
         // 传入领域服务就已经需要是聚合根了 也就是说把需要的组装好 让领域只去处理逻辑
         UserAgg userAgg = userQueryRepository.query(loginCommand.getPassword() + loginCommand.getUsername());
 
@@ -42,11 +45,10 @@ public class UserAppApplication {
             eventBus.publish(event);
         }
 
-        return domainResult;
-
+        return Result.success(domainResult);
     }
 
-    public Object pay(PayCommand payCommand){
+    public Result<Void> pay(PayCommand payCommand) {
 
         UserAgg userAgg = userQueryRepository.query("seek");
 
@@ -65,7 +67,6 @@ public class UserAppApplication {
             eventBus.publish(event);
         }
 
-
-        return null;
+        return Result.success();
     }
 }

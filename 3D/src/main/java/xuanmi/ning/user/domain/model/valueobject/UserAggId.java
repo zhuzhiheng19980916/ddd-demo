@@ -1,8 +1,15 @@
 package xuanmi.ning.user.domain.model.valueobject;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
-@Data
+/**
+ * 用户聚合根标识符 - 值对象（不可变）
+ */
+@Getter
+@EqualsAndHashCode
+@AllArgsConstructor
 public class UserAggId {
-    Long userId;
+    private final Long userId;
 }
